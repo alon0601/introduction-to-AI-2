@@ -109,7 +109,7 @@ class package_graph():
             if next_move in new_node.graph_state['F']:
                 new_node.graph_state['F'].remove(next_move)
                 new_node.graph_state['B'].append(next_move)
-            new_node.graph_state['T'] += 1
+            new_node.graph_state['T'] += 1  # important: this is only half a move, consider the time
             new_node.pick_up_package()
             successors.append((new_node, move))
         return successors

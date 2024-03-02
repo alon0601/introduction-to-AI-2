@@ -5,61 +5,6 @@ from heuristics import heuristic
 from edge import edge
 from package_graph import package_graph
 
-def deliver_package(self):
-    self.packages_delivered += 1
-
-
-def adversarial_agent(self, agent_id: str):
-    """
-    Adversarial agent that aims to maximize (p1 - p2).
-    """
-    if agent_id == 'A':
-        return alphabeta_max_h(self.graph, heuristic)
-    else:
-        return alphabeta_min_h(self.graph, heuristic)
-
-def semi_cooperative_agent(self, agent_id: str, depth: int) -> Tuple[str, Tuple[int, int]]:
-    """
-    Semi-cooperative agent that maximizes its own score, breaking ties cooperatively.
-    """
-    # Check if cutoff
-    if self.is_cutoff(depth):
-        return self.heuristic_evaluation()
-    actions = self.get_actions(agent_id)
-    max_p1 = max(actions, key=lambda x: x[1][0])[1][0]
-    max_actions_p1 = [action for action in actions if action[1][0] == max_p1]
-    return max(max_actions_p1, key=lambda x: x[1][1])
-
-def fully_cooperative_agent(self, agent_id: str, depth: int) -> Tuple[str, Tuple[int, int]]:
-    """
-    Fully cooperative agent that aims to maximize the sum of individual scores.
-    """
-    # Check if cutoff
-    if self.is_cutoff(depth):
-        return self.heuristic_evaluation()
-    actions = self.get_actions(agent_id)
-    return max(actions, key=lambda x:x[1][0]  + x[1][1])
-
-def is_cutoff(self, depth: int) -> bool:
-    """
-    Check if the cutoff condition is met based on the depth of the search.
-    """
-    max_depth = 5  # Maximum depth allowed for the search
-    return depth >= max_depth
-
-def get_actions(self, agent_id: str) -> List[Tuple[str, Tuple[int, int]]]:
-    """
-    Get possible actions for the agent.
-    """
-    actions = []
-    x, y = self.graph.graph_state['Agents'][agent_id].X, self.graph.graph_state['Agents'][agent_id].Y
-    neighbors = [(x+1, y), (x-1, y), (x, y+1), (x, y-1)]
-    for nx, ny in neighbors:
-        if 0 <= nx < self.graph.graph_state['X'] and 0 <= ny < self.graph.graph_state['Y'] and edge(x, y, nx, ny) not in self.graph.graph_state['B'] and not any(agent.X == nx and agent.Y == ny for agent in list(self.graph.graph_state['Agents'].values())):
-            actions.append(('traverse', (nx, ny)))
-    actions.append(('no-op', (x, y), self.graph))  # Adding no-op as a fallback action
-    return actions
-
 
 def move_agents():
     #  move all agents according to their move requests while checking for collisions
