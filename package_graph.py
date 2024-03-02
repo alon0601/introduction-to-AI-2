@@ -2,8 +2,8 @@ import copy
 from game_agent import agent
 from package import package
 from edge import edge
-import alpha_beta
 import re
+from AdverseAgent import AdverseAgent
 from human_agent import human_agent
 
 
@@ -17,7 +17,6 @@ class package_graph():
         blocked_edges = list()
         fragile_edges = list()
         agents = {}
-        strategy = alpha_beta.alphabeta_max_h
         init_file = open(init_file_path, mode='r', encoding='utf-8-sig')
         init_file_lines = init_file.readlines()
         for line in init_file_lines:
@@ -38,15 +37,13 @@ class package_graph():
                 fragile_edges.append(
                     edge(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), int(all_numbers_in_line[2]),
                          int(all_numbers_in_line[3])))
-            elif line[1] == 'H':
-                agents[line[1]] = human_agent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]))
-            elif line[1] == 'A':
-                agents[line[1]] = agent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), strategy)
-                self.curr_player = agents[line[1]]
-                self.first_player = agents[line[1]]
-            elif line[1] == 'C':
-                agents[line[1]] = agent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), strategy)
-                self.second_player = agents[line[1]]
+            elif line[1] == 'A1':
+                agents[1] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 1)
+                # self.curr_player = agents[line[1]]
+                # self.first_player = agents[line[1]]
+            elif line[1] == 'A2':
+                agents[2] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 2)
+                # self.second_player = agents[line[1]]
         self.graph_state['P'] = packages
         self.graph_state['B'] = blocked_edges
         self.graph_state['F'] = fragile_edges
@@ -69,44 +66,46 @@ class package_graph():
 
         self.graph_state['P'] = [package for package in packages if package not in packages_that_delivered]
 
-    def get_moves(self):
+    def get_moves(self, id):
         successors = []
         possible_moves = ["R", "U", "D", "L"]
         for move in possible_moves:
             new_node = copy.deepcopy(self)
-            current_x = self.curr_player.X
-            current_y = self.curr_player.Y
+            first_player = self.graph_state['Agents'][id]
+            second_player = self.graph_state['Agents'][3-id]
+            x_1 = first_player.X
+            y_1 = first_player.Y
+            x_2 = second_player.X
+            y_2 = second_player.Y
             next_move = None
             if move == 'R':
-                next_move = edge(current_x + 1, current_y, current_x, current_y)
-                if current_x + 1 >= new_node.graph_state['X'] or next_move in new_node.graph_state['B']:
+                next_move = edge(x_1 + 1, y_1, x_1, y_1)
+                if x_1 + 1 >= new_node.graph_state['X'] or next_move in new_node.graph_state['B']:
                     continue
-                if (self.curr_player == self.first_player and self.second_player.X == current_x + 1 and self.second_player.Y == self.curr_player.Y) or (self.curr_player == self.second_player and self.first_player.X == current_x + 1 and self.first_player.Y == self.curr_player.Y) :
+                if (x_1 + 1 == x_2) and (y_1 == y_2):
                     continue
-                new_node.curr_player.X += 1
+                new_node.graph_state['Agents'][id].X += 1
             if move == 'L':
-                next_move = edge(current_x - 1, current_y, current_x, current_y)
-                if current_x - 1 < 0 or next_move in new_node.graph_state['B']:
+                next_move = edge(x_1 - 1, y_1, x_1, y_1)
+                if x_1 - 1 < 0 or next_move in new_node.graph_state['B']:
                     continue
-                if (self.curr_player == self.first_player and self.second_player.X == current_x - 1 and self.second_player.Y == self.curr_player.Y) or (self.curr_player == self.second_player and self.first_player.X == current_x - 1 and self.first_player.Y == self.curr_player.Y) :
+                if (x_1 - 1 == x_2) and (y_1 == y_2):
                     continue
-                new_node.curr_player.X -= 1
+                new_node.graph_state['Agents'][id].X -= 1
             if move == 'U':
-                next_move = edge(current_x, current_y + 1, current_x, current_y)
-                if current_y + 1 >= new_node.graph_state['Y'] or next_move in new_node.graph_state['B']:
+                next_move = edge(x_1, y_1 + 1, x_1, y_1)
+                if y_1 + 1 >= new_node.graph_state['Y'] or next_move in new_node.graph_state['B']:
                     continue
-                if (self.curr_player == self.first_player and self.second_player.Y == current_y - 1 and self.second_player.X == self.curr_player.X) or (
-                        self.curr_player == self.second_player and self.first_player.Y == current_y - 1 and self.first_player.X == self.curr_player.X):
+                if (x_1 == x_2) and (y_1 + 1 == y_2):
                     continue
-                new_node.curr_player.Y += 1
+                new_node.graph_state['Agents'][id].Y += 1
             if move == 'D':
-                next_move = edge(current_x, current_y - 1, current_x, current_y)
-                if current_y - 1 < 0 or next_move in new_node.graph_state['B']:
+                next_move = edge(x_1, y_1 - 1, x_1, y_1)
+                if y_1 - 1 < 0 or next_move in new_node.graph_state['B']:
                     continue
-                if (self.curr_player == self.first_player and self.second_player.Y == current_y + 1 and self.second_player.X == self.curr_player.X) or (
-                        self.curr_player == self.second_player and self.first_player.Y == current_y + 1 and self.first_player.X == self.curr_player.X):
+                if (x_1 == x_2) and (y_1 - 1 == y_2):
                     continue
-                new_node.curr_player.Y -= 1
+                new_node.graph_state['Agents'][id].Y -= 1
             if next_move in new_node.graph_state['F']:
                 new_node.graph_state['F'].remove(next_move)
                 new_node.graph_state['B'].append(next_move)
