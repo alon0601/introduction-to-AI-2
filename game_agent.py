@@ -9,7 +9,7 @@ class agent():
         self.node = node
 
     def act(self, init_graph):
-        return self.strategy(init_graph, heuristic)
+            return self.strategy(init_graph, heuristic)
 
     def __repr__(self):
         return "x :" + str(self.X) + ", y :" + str(self.Y) + ", score :" + str(self.Score) + "\n" + str(self.packages)

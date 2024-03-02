@@ -106,7 +106,7 @@ if __name__ == "__main__":
             agent.act(graph)
         move_agents()
         graph.graph_state['T'] += 1
-        print(graph)
+        graph.visualize_state()
 
     # Specify the game type (adversarial, semi-cooperative, fully-cooperative)
 

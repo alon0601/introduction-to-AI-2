@@ -4,10 +4,11 @@ from package import package
 from edge import edge
 import alpha_beta
 import re
+from human_agent import human_agent
 
 
 class package_graph():
-    def __init__(self, init_file_path):
+    def __init__(self, init_file_path, game_type):
         self.first_player = None
         self.second_player = None
         self.graph_state = {}
@@ -148,3 +149,37 @@ class package_graph():
 
     def get_second_player(self):
         return self.second_player
+
+    def visualize_state(self):
+        # Initialize an empty grid with dashes
+        grid = [['-' for _ in range(self.graph_state['X'] + 1)] for _ in range(self.graph_state['Y'] + 1)]
+
+        # Add blocked edges to the grid
+        for e in self.graph_state['B']:
+            for point in e.points:
+                x, y = point
+                if grid[y][x] == '-':  # Only mark if not already marked by a package or agent
+                    grid[y][x] = 'B'
+
+        # Add fragile edges to the grid
+        for e in self.graph_state['F']:
+            for point in e.points:
+                x, y = point
+                if grid[y][x] == '-':  # Only mark if not already marked by a package or agent
+                    grid[y][x] = 'F'
+
+        # Add packages to the grid
+        for package in self.graph_state['P']:
+            if not package.picked:
+                grid[package.p_y][package.p_x] = 'P'
+
+        # Add agents to the grid
+        for age, age_value in self.graph_state['Agents'].items():
+            grid[age_value.Y][age_value.X] = age
+
+        grid.reverse()
+
+        # Print the grid
+        for row in grid:
+            print(' '.join(row))
+
