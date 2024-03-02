@@ -1,5 +1,5 @@
 import copy
-from agent import agent
+from game_agent import agent
 from package import package
 from edge import edge
 import alpha_beta
@@ -37,6 +37,8 @@ class package_graph():
                 fragile_edges.append(
                     edge(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), int(all_numbers_in_line[2]),
                          int(all_numbers_in_line[3])))
+            elif line[1] == 'H':
+                agents[line[1]] = human_agent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]))
             elif line[1] == 'A':
                 agents[line[1]] = agent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), strategy)
                 self.curr_player = agents[line[1]]
