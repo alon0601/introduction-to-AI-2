@@ -4,7 +4,7 @@ from heuristics import heuristic
 h = heuristic
 
 
-def alphabeta_max_h(current_game, id, depth=8):
+def alphabeta_max_h(current_game, id, depth=5):
     # add code here
     alpha = -math.inf
     beta = math.inf
@@ -28,6 +28,13 @@ def minimax(current_game, alpha, beta, depth, maximize, id):
     if maximize:
         v = -math.inf
         successors = current_game.get_moves(id)
+        # debugging:
+        # print("depth: "+ str(depth))
+        # print("player: " + str(id))
+        # print("successors: " + str([mov for suc, mov in successors]))
+        # for suc, mov in successors:
+        #     print("move: " + mov)
+        #     print("h: " + str(h(suc, id)))
         for successor, move in successors:
             mx, _ = minimax(successor, alpha, beta, depth - 1, False, 3-id)
             if v < mx:

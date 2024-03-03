@@ -37,7 +37,6 @@ class package_graph():
                     edge(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), int(all_numbers_in_line[2]),
                          int(all_numbers_in_line[3])))
             elif line[1] == 'A':
-                print("got to A1")
                 agents[1] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 1)
                 # self.curr_player = agents[line[1]]
                 # self.first_player = agents[line[1]]
