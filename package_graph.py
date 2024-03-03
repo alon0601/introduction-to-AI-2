@@ -36,11 +36,12 @@ class package_graph():
                 fragile_edges.append(
                     edge(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), int(all_numbers_in_line[2]),
                          int(all_numbers_in_line[3])))
-            elif line[1] == 'A1':
+            elif line[1] == 'A':
+                print("got to A1")
                 agents[1] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 1)
                 # self.curr_player = agents[line[1]]
                 # self.first_player = agents[line[1]]
-            elif line[1] == 'A2':
+            elif line[1] == 'C':
                 agents[2] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 2)
                 # self.second_player = agents[line[1]]
         self.graph_state['P'] = packages
@@ -49,7 +50,6 @@ class package_graph():
         self.graph_state['Agents'] = agents
         self.graph_state['T'] = 0
 
-    # I moved pick_up_package to here to use it in the search tree
     def pick_up_package(self):
         packages = self.graph_state['P']
         packages_that_delivered = set()
@@ -167,10 +167,13 @@ class package_graph():
         return self.curr_player.Score
 
     def is_terminal(self):
-        return len(self.get_moves(self)) == 0
+        return len(self.get_moves(1)) + len(self.get_moves(2)) == 0
 
     def is_game_finished(self):
-        return len(self.graph_state['P']) == 0
+        return self.packages_left() == 0
+
+    def packages_left(self):
+        return len([p for p in self.graph_state['P'] if not p.delivered])
 
     def get_first_player(self):
         return self.first_player
@@ -179,6 +182,7 @@ class package_graph():
         return self.second_player
 
     def visualize_state(self):
+        print()
         # Initialize an empty grid with dashes
         grid = [['-' for _ in range(self.graph_state['X'] + 1)] for _ in range(self.graph_state['Y'] + 1)]
 
@@ -203,7 +207,8 @@ class package_graph():
 
         # Add agents to the grid
         for age, age_value in self.graph_state['Agents'].items():
-            grid[age_value.Y][age_value.X] = age
+            age_symbol = 'A' if age == 1 else 'C'
+            grid[age_value.Y][age_value.X] = age_symbol
 
         grid.reverse()
 

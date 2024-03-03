@@ -9,6 +9,5 @@ class AdverseAgent(agent):
         self.id = id
 
     def act(self, init_graph):
-        self.move_request = (self.X, self.Y)
         _, move = alphabeta_max_h(init_graph, self.id)
         init_graph.move_agent(self.id, move)
