@@ -1,5 +1,4 @@
 import copy
-from game_agent import agent
 from package import package
 from edge import edge
 import re
@@ -113,6 +112,37 @@ class package_graph():
             new_node.pick_up_package()
             successors.append((new_node, move))
         return successors
+
+    def move_agent(self, id, move):
+        # check if agent can move there and move him
+        blocked_edges = self.graph_state['B']
+        fragile_edges = self.graph_state['F']
+        new_x = self.graph_state['Agents'][id].X
+        new_y = self.graph_state['Agents'][id].Y
+        if move == 'D':
+            new_y -= 1
+        elif move == 'U':
+            new_y += 1
+        elif move == 'R':
+            new_x += 1
+        elif move == 'L':
+            new_x -= 1
+        else:
+            return False
+        edge_to_move = edge(self.graph_state['Agents'][id].X, self.graph_state['Agents'][id].Y, new_x, new_y)
+        for a_id, agent in self.graph_state['Agents'].items():
+            if a_id != id and agent.X == new_x and agent.Y == new_y:
+                return False
+        if edge_to_move in blocked_edges:
+            return False
+        self.graph_state['Agents'][id].X = new_x
+        self.graph_state['Agents'][id].Y = new_y
+        if edge_to_move in fragile_edges:
+            print("a fragile edge was traversed")
+            fragile_edges.remove(edge_to_move)
+            blocked_edges.append(edge_to_move)
+        self.pick_up_package()
+        return True
 
     def __repr__(self):
         graph_string = ""

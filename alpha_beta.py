@@ -20,6 +20,7 @@ def alphabeta_min_h(current_game, depth=5):
 def minimax(current_game, alpha, beta, depth, maximize, id):
     best_move = "NO-OP"
     if current_game.is_terminal() or current_game.is_game_finished() or depth == 0:
+        # change this line according to graph
         return h(current_game, current_game.get_first_player()) - h(current_game, current_game.get_second_player()), current_game
 
     if maximize:
