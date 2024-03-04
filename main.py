@@ -3,14 +3,22 @@ from typing import Tuple, List
 from alpha_beta import alphabeta_max_h
 from heuristics import heuristic
 from edge import edge
+from maximax import maximax_decision
 from package_graph import package_graph
-
+from sem_cooperative import semi_maximax_decision
 
 if __name__ == "__main__":
     # Initialize the package graph
     init_file_path = "test"  # Provide the path to your initialization file
     game_type = "adversarial"  # Change this to the desired game type
-    graph = package_graph(init_file_path, game_type)
+    game_type = "fully-cooperative"
+    if game_type == "fully-cooperative":
+        strategy = maximax_decision
+    elif game_type == "adversarial":
+        strategy = alphabeta_max_h
+    else:
+        strategy = semi_maximax_decision
+    graph = package_graph(init_file_path, strategy)
 
     max_delivery_time = max([p.d_time for p in graph.graph_state['P']])
     num_of_packages = len(graph.graph_state['P'])

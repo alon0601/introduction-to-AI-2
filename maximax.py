@@ -1,27 +1,31 @@
+import math
 import random
 
-MAX_DEPTH = 15
+from heuristics import heuristic
+
+h = heuristic
 
 
-def max_value(state, current_game, h):
-    if state.terminated or current_game.is_game_finished():
-        return  h(current_game, current_game.get_first_player()) + h(current_game, current_game.get_second_player()), None
-    if state.g >= MAX_DEPTH:
-        return eval(state)
+def max_value(current_game, id, depth=5):
+    best_move = "NO-OP"
+    if current_game.is_terminal() or current_game.is_game_finished() or depth == 0:
+        return h(current_game, id) + h(current_game, 3 - id), best_move  # switch the id
     v = float('-inf')
-    successors = current_game.get_moves()
-    for s in successors:
-        min_val = max_value(s, current_game, h)
-        v = max(v, min_val)
-    return v
+    successors = current_game.get_moves(id)
+    for s, move in successors:
+        mx, _ = max_value(current_game, 3 - id, depth - 1)
+        if v < mx:
+            v = mx
+            best_move = move
+    return v, best_move
 
 
-def maximax_decision(state, current_game, h):
+def maximax_decision(current_game, id):
     results = []
     val_action = float('-inf')
-    for s in current_game.get_moves():
-        temp_value = max_value(s, current_game, h)
-        results.insert(0, (temp_value, s.player2.node))
+    for s, move in current_game.get_moves(id):
+        temp_value, _= max_value(current_game, 3 - id)
+        results.insert(0, (temp_value, move))
         if temp_value > val_action:
             val_action = temp_value
     print("results: ", results)

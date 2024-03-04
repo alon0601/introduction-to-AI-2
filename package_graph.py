@@ -7,7 +7,7 @@ from human_agent import human_agent
 
 
 class package_graph():
-    def __init__(self, init_file_path, game_type):
+    def __init__(self, init_file_path, strategy):
         self.first_player = None
         self.second_player = None
         self.graph_state = {}
@@ -37,11 +37,11 @@ class package_graph():
                     edge(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), int(all_numbers_in_line[2]),
                          int(all_numbers_in_line[3])))
             elif line[1] == 'A':
-                agents[1] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 1)
+                agents[1] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 1, strategy)
                 # self.curr_player = agents[line[1]]
                 # self.first_player = agents[line[1]]
             elif line[1] == 'C':
-                agents[2] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 2)
+                agents[2] = AdverseAgent(int(all_numbers_in_line[0]), int(all_numbers_in_line[1]), 2, strategy)
                 # self.second_player = agents[line[1]]
         self.graph_state['P'] = packages
         self.graph_state['B'] = blocked_edges
