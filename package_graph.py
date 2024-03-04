@@ -78,7 +78,7 @@ class package_graph():
             next_move = None
             if move == 'R':
                 next_move = edge(x_1 + 1, y_1, x_1, y_1)
-                if x_1 + 1 >= new_node.graph_state['X'] or next_move in new_node.graph_state['B']:
+                if x_1 + 1 > new_node.graph_state['X'] or next_move in new_node.graph_state['B']:
                     continue
                 if (x_1 + 1 == x_2) and (y_1 == y_2):
                     continue
@@ -92,7 +92,7 @@ class package_graph():
                 new_node.graph_state['Agents'][id].X -= 1
             if move == 'U':
                 next_move = edge(x_1, y_1 + 1, x_1, y_1)
-                if y_1 + 1 >= new_node.graph_state['Y'] or next_move in new_node.graph_state['B']:
+                if y_1 + 1 > new_node.graph_state['Y'] or next_move in new_node.graph_state['B']:
                     continue
                 if (x_1 == x_2) and (y_1 + 1 == y_2):
                     continue
@@ -215,3 +215,4 @@ class package_graph():
         for row in grid:
             print(' '.join(row))
 
+        print(list(map(lambda agent: agent.packages, list(self.graph_state['Agents'].values()))))

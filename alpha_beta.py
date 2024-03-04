@@ -1,4 +1,6 @@
 import math
+import random
+
 from heuristics import heuristic
 
 h = heuristic
@@ -6,9 +8,21 @@ h = heuristic
 
 def alphabeta_max_h(current_game, id, depth=5):
     # add code here
+    results = []
     alpha = -math.inf
     beta = math.inf
-    return minimax(current_game, alpha, beta, depth, True, id)
+    val_action = float('-inf')
+    for s, move in current_game.get_moves(id):
+        value, state = minimax(s, alpha, beta, depth, False, 3 - id)
+        results.insert(0, (value, move))
+        if value > val_action:
+            val_action = value
+    print("results: ", results)
+
+    filteredresult=list(filter(lambda r: r[0] == val_action, results))
+    print("filtered results: ", filteredresult)
+    action = filteredresult[random.randint(0, len(filteredresult)-1)][1]
+    return action
 
 
 # def alphabeta_min_h(current_game, depth=5):

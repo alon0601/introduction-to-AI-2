@@ -19,6 +19,7 @@ if __name__ == "__main__":
         for agent in graph.graph_state['Agents'].values():
             agent.act(graph)
         graph.graph_state['T'] += 1
+        print("graph state after ", graph.graph_state['T'])
         graph.visualize_state()
     if graph.packages_left() == 0:
         print("all packages delivered.")
