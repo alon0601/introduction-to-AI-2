@@ -17,10 +17,10 @@ def alphabeta_max_h(current_game, id, depth=5):
         results.insert(0, (value, move))
         if value > val_action:
             val_action = value
-    print("results: ", results)
+    # print("results: ", results)
 
     filteredresult=list(filter(lambda r: r[0] == val_action, results))
-    print("filtered results: ", filteredresult)
+    # print("filtered results: ", filteredresult)
     action = filteredresult[random.randint(0, len(filteredresult)-1)][1]
     return action
 

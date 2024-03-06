@@ -10,7 +10,7 @@ from sem_cooperative import semi_maximax_decision
 if __name__ == "__main__":
     # Initialize the package graph
     init_file_path = "test"  # Provide the path to your initialization file
-    game_type = "adversarial"  # Change this to the desired game type
+    # game_type = "adversarial"  # Change this to the desired game type
     game_type = "fully-cooperative"
     if game_type == "fully-cooperative":
         strategy = maximax_decision

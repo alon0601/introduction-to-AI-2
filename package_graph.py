@@ -215,4 +215,4 @@ class package_graph():
         for row in grid:
             print(' '.join(row))
 
-        print(list(map(lambda agent: agent.packages, list(self.graph_state['Agents'].values()))))
+        # print(list(map(lambda agent: agent.packages, list(self.graph_state['Agents'].values()))))
