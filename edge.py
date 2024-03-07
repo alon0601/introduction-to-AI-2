@@ -4,7 +4,7 @@ class edge():
         self.weight = w
 
     def __eq__(self, other):
-        return other.points == self.points
+        return other and other.points == self.points
 
     def __repr__(self):
         return str(self.points) + " Weight:" + str(self.weight)

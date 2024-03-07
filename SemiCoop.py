@@ -14,18 +14,22 @@ def max_h_coop(current_game, id, depth=5):
     for s, move in current_game.get_moves(id):
         value, state = minimax_coop(s, depth, 3 - id)
         results.insert(0, (value, move))
-        if value > val_action:
-            val_action = value
+        if player_val < value[1]:
+            player_val = value[1]
+            op_val = value[0]
+        elif player_val == value[1] and op_val < value[0]:
+            op_val = value[0]
+
     # print("results: ", results)
 
-    filteredresult=list(filter(lambda r: r[0] == val_action, results))
+    filteredresult = list(filter(lambda r: r[0][0] == op_val and r[0][1] == player_val, results))
     # print("filtered results: ", filteredresult)
     action = filteredresult[random.randint(0, len(filteredresult)-1)][1]
     return action
 
 
 # def alphabeta_min_h(current_game, depth=5):
-#     alpha = -math.inf
+#       alpha = -math.inf
 #     beta = math.inf
 #     return minimax(current_game, alpha, beta, depth, False)
 

@@ -66,7 +66,7 @@ class package_graph():
 
     def get_moves(self, id):
         successors = []
-        possible_moves = ["R", "U", "D", "L"]
+        possible_moves = ["R", "U", "D", "L", "N"]
         for move in possible_moves:
             new_node = copy.deepcopy(self)
             first_player = self.graph_state['Agents'][id]
