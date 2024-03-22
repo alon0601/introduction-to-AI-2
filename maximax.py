@@ -28,8 +28,8 @@ def maximax_decision(current_game, id):
         results.insert(0, (temp_value, move))
         if temp_value > val_action:
             val_action = temp_value
-    # print("results: ", results)
-    # filtered_result = list(filter(lambda r: r[0] == val_action, results))
-    # print("filtered results: ", filtered_result)
-    # action = filtered_result[random.randint(0, len(filtered_result)-1)][1]  # choose an action with max value randomly
+    print("results: ", results)
+    filtered_result = list(filter(lambda r: r[0] == val_action, results))
+    print("filtered results: ", filtered_result)
+    action = filtered_result[random.randint(0, len(filtered_result)-1)][1]  # choose an action with max value randomly
     return action

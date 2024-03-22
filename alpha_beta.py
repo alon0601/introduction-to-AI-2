@@ -6,7 +6,7 @@ from heuristics import heuristic
 h = heuristic
 
 
-def alphabeta_max_h(current_game, id, depth=5):
+def alphabeta_max_h(current_game, id, depth=10):
     # add code here
     results = []
     alpha = -math.inf

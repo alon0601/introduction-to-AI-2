@@ -1,18 +1,20 @@
 import random
 
-MAX_DEPTH = 15
+from heuristics import heuristic
+
+h = heuristic
 
 
-def semi_max_value(state, current_game, h):
-    if state.terminated or current_game.is_game_finished():
-        return h(current_game, current_game.get_first_player()) - h(current_game, current_game.get_second_player()), None
-    if state.g >= MAX_DEPTH:
-        return eval(state)
+
+def semi_max_value(current_game, id, depth=5):
+    best_move = "NO-OP"
+    if current_game.is_terminal() or current_game.is_game_finished() or depth == 0:
+        return h(current_game, current_game.get_first_player()) - h(current_game, current_game.get_second_player()), best_move
     v = float('-inf')
     u = float('-inf')
     successors = current_game.get_moves()
     for s in successors:
-        my_val, opponent_value = semi_max_value(s, current_game, h)
+        my_val, opponent_value = semi_max_value(s, current_game)
         if v == my_val:
             if opponent_value > u:
                 u = opponent_value
@@ -22,13 +24,13 @@ def semi_max_value(state, current_game, h):
     return v, u
 
 
-def semi_maximax_decision(current_game, h):
+def semi_maximax_decision(current_game, id):
     results = []
     val_action = float('-inf')
     opponent_val_score = float('-inf')
     for s in current_game.get_moves():
-        my_value, opponent_value = semi_max_value(s, current_game, h)
-        results.insert(0, (my_value,opponent_value, s.player2.node))
+        my_value, opponent_value = semi_max_value(current_game, id)
+        results.insert(0, (my_value, opponent_value, s.player2.node))
         if my_value > val_action:
             val_action = my_value
             opponent_val_score = opponent_value
