@@ -6,7 +6,7 @@ from heuristics import heuristic
 h = heuristic
 
 
-def max_value(current_game, id, depth=5):
+def max_value(current_game, id, depth=6):
     best_move = "NO-OP"
     if current_game.is_terminal() or current_game.is_game_finished() or depth == 0:
         return h(current_game, id) + h(current_game, 3 - id), best_move  # switch the id
@@ -24,7 +24,7 @@ def maximax_decision(current_game, id):
     results = []
     val_action = float('-inf')
     for s, move in current_game.get_moves(id):
-        temp_value, _= max_value(s, 3 - id)
+        temp_value, _ = max_value(s, 3 - id)
         results.insert(0, (temp_value, move))
         if temp_value > val_action:
             val_action = temp_value

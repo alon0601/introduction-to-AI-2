@@ -66,7 +66,7 @@ class package_graph():
 
     def get_moves(self, id):
         successors = []
-        possible_moves = ["R", "U", "D", "L", "N"]
+        possible_moves = ["R", "U", "D", "L","N"]
         for move in possible_moves:
             new_node = copy.deepcopy(self)
             first_player = self.graph_state['Agents'][id]
@@ -172,7 +172,7 @@ class package_graph():
         return self.packages_left() == 0
 
     def packages_left(self):
-        return len([p for p in self.graph_state['P'] if not p.delivered])
+        return [p for p in self.graph_state['P'] if not p.delivered]
 
     def get_first_player(self):
         return self.first_player

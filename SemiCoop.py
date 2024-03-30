@@ -6,7 +6,7 @@ from heuristics import heuristic
 h = heuristic
 
 
-def max_h_coop(current_game, id, depth=5):
+def max_h_coop(current_game, id, depth=6):
     # add code here
     results = []
     player_val = float('-inf')
@@ -20,10 +20,7 @@ def max_h_coop(current_game, id, depth=5):
         elif player_val == value[id-1] and op_val < value[2-id]:
             op_val = value[2-id]
 
-    print("results: ", results)
-
     filteredresult = list(filter(lambda r: r[0][2-id] == op_val and r[0][id-1] == player_val, results))
-    print("filtered results: ", filteredresult)
     action = filteredresult[random.randint(0, len(filteredresult)-1)][1]
     return action
 
